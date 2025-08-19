@@ -18,7 +18,7 @@ phases:
       - echo "Push the docker image to AWS ECR..."
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY:$IMAGE_TAG
       - echo "Update IMAGE_TAG in docker-compose.yml..."
-      - sed -i -e "s/\${IMAGE_TAG:-latest}/$IMAGE_TAG/g" docker-compose.yml
+      # - sed -i -e "s/\${IMAGE_TAG:-latest}/$IMAGE_TAG/g" docker-compose.yml
 artifacts:
   files:
     - .ebextensions/**/*
