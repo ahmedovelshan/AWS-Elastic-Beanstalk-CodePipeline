@@ -1,4 +1,9 @@
 version: 0.2
+
+env:
+  variables:
+    IMAGE_REPOSITORY: webapp  # change to your repository name if different
+
 phases:
   pre_build:
     commands:
@@ -14,9 +19,9 @@ phases:
       - echo "Build completed on `date`"
   post_build:
     commands:
-      - echo "Push the docker image to AWS ECR..."
+      - echo "Push the Docker image to AWS ECR..."
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY:$IMAGE_TAG
-      - echo "Creating Dockerrun.aws.json with new image tag..."
+      - echo "Creating Dockerrun.aws.json..."
       - |
         cat > Dockerrun.aws.json <<EOL
         {
@@ -32,7 +37,13 @@ phases:
           ]
         }
         EOL
+      - echo "Zipping Dockerrun.aws.json..."
       - zip Dockerrun.aws.json_$COMMIT_SHA.zip Dockerrun.aws.json
+
 artifacts:
   files:
     - Dockerrun.aws.json_*.zip
+
+cache:
+  paths:
+    - node_modules
