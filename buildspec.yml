@@ -21,28 +21,12 @@ phases:
     commands:
       - echo "Push the Docker image to AWS ECR..."
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY:$IMAGE_TAG
-      - echo "Creating Dockerrun.aws.json..."
-      - |
-        cat > Dockerrun.aws.json <<EOL
-        {
-          "AWSEBDockerrunVersion": 1,
-          "Image": {
-            "Name": "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY:$IMAGE_TAG",
-            "Update": "true"
-          },
-          "Ports": [
-            {
-              "ContainerPort": "5000"
-            }
-          ]
-        }
-        EOL
-      - echo "Zipping Dockerrun.aws.json..."
-      - zip Dockerrun.aws.json_$COMMIT_SHA.zip Dockerrun.aws.json
+      - echo "Update IMAGE_TAG in Dockerrun.aws.json..."
+      - sed -i "s/\${IMAGE_NAME_TAG}/$IMAGE_NAME_TAG/g" Dockerrun.aws.json
 
 artifacts:
   files:
-    - Dockerrun.aws.json_*.zip
+    - Dockerrun.aws.json
 
 cache:
   paths:
