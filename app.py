@@ -5,7 +5,7 @@ import boto3
 
 app = Flask(__name__)
 
-SECRET_NAME = "users/app-password"
+SECRET_NAME = "users/app-password-1"
 REGION_NAME = os.getenv("AWS_REGION", "eu-central-1")
 
 def get_secret():
