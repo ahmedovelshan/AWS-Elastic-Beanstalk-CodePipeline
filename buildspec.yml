@@ -21,7 +21,7 @@ phases:
       - echo "Push the Docker image to AWS ECR..."
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY:$IMAGE_TAG
       - echo "Update IMAGE_TAG in Dockerrun.aws.json..."
-      - sed -i "s/\${IMAGE_NAME_TAG}/$IMAGE_NAME_TAG/g" Dockerrun.aws.json
+      - sed -i "s/\${IMAGE_TAG}/$IMAGE_TAG/g" Dockerrun.aws.json
 
 artifacts:
   files:
