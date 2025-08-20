@@ -1,5 +1,4 @@
 version: 0.2
-
 env:
   variables:
     IMAGE_REPOSITORY: webapp  # change to your repository name if different
