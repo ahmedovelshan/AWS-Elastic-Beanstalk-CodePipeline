@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "066547615318.dkr.ecr.eu-central-1.amazonaws.com/webapp:${IMAGE_NAME_TAG}",
+    "Name": "066547615318.dkr.ecr.eu-central-1.amazonaws.com/webapp:${IMAGE_TAG}",
     "Update": "true"
   },
   "Ports": [
