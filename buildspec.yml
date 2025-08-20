@@ -17,13 +17,23 @@ phases:
     commands:
       - echo "Push the docker image to AWS ECR..."
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY:$IMAGE_TAG
-      - echo "Update IMAGE_TAG in docker-compose.yml..."
-      # - sed -i -e "s/\${IMAGE_TAG:-latest}/$IMAGE_TAG/g" docker-compose.yml
-# artifacts:
-#   files:
-#     - .ebextensions/**/*
-#     # - docker-compose.yml
-#     - nginx.conf
-cache:
-  paths:
-    - node_modules
+      - echo "Creating Dockerrun.aws.json with new image tag..."
+      - |
+        cat > Dockerrun.aws.json <<EOL
+        {
+          "AWSEBDockerrunVersion": 1,
+          "Image": {
+            "Name": "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY:$IMAGE_TAG",
+            "Update": "true"
+          },
+          "Ports": [
+            {
+              "ContainerPort": "5000"
+            }
+          ]
+        }
+        EOL
+      - zip Dockerrun.aws.json_$COMMIT_SHA.zip Dockerrun.aws.json
+artifacts:
+  files:
+    - Dockerrun.aws.json_*.zip
